@@ -2,7 +2,7 @@
   "name": "styx",
   "version": "0.1.0",
   "private": true,
-  "main": "dist/index.js",
+  "main": "dist/app.js",
   "scripts": {
     "clean": "rimraf dist/*",
     "lint": "tslint -c tslint.json -p tsconfig.json --fix",
@@ -20,13 +20,16 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-handlebars": "^5.3.2",
-    "handlebars": "^4.7.7"
+    "express-session": "^1.17.2",
+    "handlebars": "^4.7.7",
+    "slsk-client": "^1.1.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
     "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.13",
     "@types/express-handlebars": "^5.3.1",
+    "@types/express-session": "^1.17.4",
     "@types/fs-extra": "^9.0.12",
     "@types/node": "^16.3.1",
     "@types/shelljs": "^0.8.9",
