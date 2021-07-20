@@ -9,6 +9,19 @@
     <link href="css/pages/{{ title }}.css" rel="stylesheet"/>
 </head>
 <body>
-{{{ body }}}
+<div class="layout-container">
+    <div class="split-left">
+        {{> menu }}
+    </div>
+    <div class=split-right>
+        {{{ body }}}
+    </div>
+</div>
 </body>
 </html>
+
+<style>
+    body {
+        margin: 0;
+    }
+</style>

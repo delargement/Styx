@@ -1,0 +1,28 @@
+
+.menu {
+	/*position: absolute;*/
+	/*left: 0;*/
+	/*top: 0;*/
+	/*margin: 0;*/
+	width: 100%;
+	height: 100%;
+	background-color: #1cb864;
+}
+
+.menu-items {
+	display: flex;
+	text-decoration: none;
+}
+.menu-items ul {
+	margin-top: 2rem;
+	list-style: none;
+	padding-left: 10px;
+}
+.menu-items ul li a {
+	display: block;
+	padding: 16px;
+	color: white;
+	font-family: Lato, sans-serif;
+	font-size: large;
+}
+

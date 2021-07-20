@@ -1,0 +1,25 @@
+
+.layout-container {
+	/*height: 100vh;*/
+	/*display: grid;*/
+	/*grid-template-columns: 15% 85%;*/
+}
+.split-left {
+	margin: 0;
+	padding: 0;
+	width: 200px;
+	background-color: #f1f1f1;
+	position: fixed;
+	height: 100%;
+	overflow: auto;
+	/*grid-column-start: 1;*/
+	/*grid-column-end: 2;*/
+}
+.split-right {
+	/*grid-column-start: 2;*/
+	/*grid-column-end: 3;*/
+	margin-left: 250px;
+	height: 100%;
+	padding: 2rem;
+	padding: 1px 16px;
+}

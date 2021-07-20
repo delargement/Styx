@@ -6,15 +6,16 @@ import User from "../types/User";
 const index = Router();
 
 index.get('/',(req, res) => {
-  if (!req.session.user || !req.session.user.loggedIn){
-    return res.redirect('/login');
-  }
+  // if (!req.session.user || !req.session.user.loggedIn){
+  //   return res.redirect('/login');
+  // }
   return res.render('home');
 });
 
 index.get('/login',(req, res) => {
   res.render('login', {
     title: 'Login',
+    layout: false,
   })
 });
 
@@ -41,7 +42,6 @@ index.post('/user',(req, res) => {
       console.log(`Logged in successfully as ${req.body.username}`);
       res.redirect('/');
     });
-  // console.log(req.body.username);
 })
 
 export default index;

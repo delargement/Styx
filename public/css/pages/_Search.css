@@ -1,0 +1,21 @@
+
+.search-left {
+    width: 60%;
+    height: 100%;
+    float: left;
+}
+.search-right {
+    padding: 1rem;
+    padding-left: 2rem;
+    float: right;
+    width: 40%;
+    height: 100%;
+}
+
+.cover {
+    position: center;
+    width: 100%;
+    padding-left: 5rem;
+    padding-right: 5rem;
+}
+
