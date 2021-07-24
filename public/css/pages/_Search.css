@@ -5,17 +5,32 @@
     float: left;
 }
 .search-right {
-    padding: 1rem;
-    padding-left: 2rem;
+    padding: 0 1rem 1rem 2rem;
     float: right;
     width: 40%;
     height: 100%;
+}
+.info-port {
+    position: fixed;
+}
+#port-filelist {
+    height: 20rem;
+    overflow: scroll;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .cover {
     position: center;
     width: 100%;
-    padding-left: 5rem;
-    padding-right: 5rem;
+    padding-left: 10rem;
+    padding-right: 10rem;
+}
+.search-header {
+    margin-bottom: 0;
+}
+
+tr {
+    /*cursor: pointer;*/
 }
 

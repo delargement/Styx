@@ -4,13 +4,28 @@ import slsk from 'slsk-client';
 import User from "../types/User";
 
 const index = Router();
+let slskClient: object = null;
 
 index.get('/',(req, res) => {
-  // if (!req.session.user || !req.session.user.loggedIn){
-  //   return res.redirect('/login');
-  // }
+  if (!req.session.user || !req.session.user.loggedIn){
+    return res.redirect('/login');
+  }
   return res.render('home');
 });
+
+index.post('/', (req, res) => {
+    if (req.body.query === "") return;
+
+    if(slskClient === null) return
+    // @ts-ignore
+    slskClient.search({
+        req: req.body.query, timeout: 2000
+    },(err: any, slskres: any) => {
+        if (err) console.log(err);
+
+        res.json(slskres.slice(100));
+    });
+})
 
 index.get('/login',(req, res) => {
   res.render('login', {
@@ -36,10 +51,13 @@ index.post('/user',(req, res) => {
       }
       if(!req.session.user)
         req.session.user = new User();
+
       req.session.user.slskUsername = req.body.username;
-      req.session.user.slskClient = client;
       req.session.user.loggedIn = true;
+      slskClient = client;
+
       console.log(`Logged in successfully as ${req.body.username}`);
+
       res.redirect('/');
     });
 })

@@ -1,25 +1,155 @@
 <div class="search-page">
-    <h1>Search</h1>
+    <h1 class="search-header">Search</h1>
     <div class="search-left">
-    <form>
+    <form onsubmit="return slskSearch()">
         <label for="search"></label>
         <input type="text" id="search" placeholder="Search album, artist etc.">
     </form>
     <table>
         <thead>
         <tr>
+            <th>User</th>
             <th>Folder</th>
             <th>File Type</th>
-            <th>Download Size</th>
+            <th>Download Size (mb)</th>
+            <th>Min Bitrate</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody id="searchTbody">
+
         </tbody>
     </table>
     </div>
     <div class="search-right">
         <div class="info-port">
+            <h2 id="port-header">Album</h2>
             <img src="/images/logo.png" alt="cover" class="cover"/>
+            <h4 id="port-foldername"></h4>
+            <ul id="port-filelist">
+
+            </ul>
         </div>
     </div>
 </div>
+<script>
+    function slskSearch() {
+        const req = {
+            query: document.getElementById('search').value
+        };
+        fetch('/',{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(req)
+        }).then(res => res.json())
+        .then(res => {
+            res = groupRes(cleanRes(res)).slice(0,100);
+            insertRows(res);
+            console.log(res);
+        });
+        return false;
+    }
+    function cleanRes(res) {
+        return res.map(it => {
+            it.file = it.file.split('\\');
+            it.folder = it.file.slice(0,-1).join('\\');
+            it.folderName = it.file[it.file?.length-2];
+            it.fileName = it.file[it.file?.length-1];
+            return it;
+        });
+    }
+    // function compareArray(arr1, arr2) {
+    //     return arr1.length === arr2.length && arr1.map((e,i) => e === arr2[i]).every(it => it);
+    // }
+    function groupRes(res) {
+        const data = [];
+        let group = [];
+        for (const entry of res) {
+            if (group.length === 0 || group[0].folder === entry.folder) {
+                group.push(entry);
+            } else {
+                data.push(group.sort(it => it.fileName));
+                group = [entry];
+            }
+        }
+        if (group.length !== 0) {
+            data.push(group.sort(it => it.fileName));
+        }
+        return data.filter(group => group.length !== 0);
+    }
+
+    function insertRows(res) {
+        const tbody = document.getElementById('searchTbody');
+
+        res.forEach(group => {
+            const row = tbody.insertRow();
+            const cell0 = row.insertCell(0);
+            const cell1 = row.insertCell(1);
+            const cell2 = row.insertCell(2);
+            const cell3 = row.insertCell(3);
+            const cell4 = row.insertCell(4);
+
+            cell0.innerText = group[0].user;
+            cell1.innerHTML = group[0].folderName;
+            cell2.innerHTML = getFileTypes(group);
+            cell3.innerHTML = getFolderSize(group);
+            cell4.innerHTML = getMinBitrate(group) || "";
+
+            row.onclick = function (group) {
+                return function() {
+                    fillViewport(group);
+                };
+            }(group);
+        })
+    }
+
+    function fillViewport(group) {
+        const header = document.getElementById('port-header');
+        const path = document.getElementById('port-foldername');
+        const fileList = document.getElementById('port-filelist');
+        fileList.innerHTML = '';
+
+        header.innerHTML = group[0].folderName;
+        path.innerText = group[0].file.slice(1,group[0].file.length-2).join('/');
+        group.forEach(file => {
+            const li = document.createElement('li');
+            li.innerHTML = file.fileName;
+            fileList.appendChild(li);
+        });
+    }
+
+    function getFileTypes(group) {
+        return [... new Set(group.map(it => {
+            return it.fileName.split('.').pop();
+        }))].join('; ');
+    }
+
+    function getFileSize(file) {
+       return file.size / (1024 * 1024);
+    }
+    function getFolderSize(group) {
+        return group.map(it => getFileSize(it)).reduce((a,b) => a+b) | 0;
+    }
+
+    function infinityToNull(p) {
+        return p === Infinity  ? null : p;
+    }
+
+    function getMinBitrate(group) {
+        return infinityToNull([... group.map(it => it.bitrate)
+                .filter(it => !isNaN(it)), Infinity]
+                .reduce((a,b) => Math.min(a,b)));
+    }
+
+    function playFolder(group) {
+        fetch('/',{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(group)
+        });
+    }
+
+</script>
